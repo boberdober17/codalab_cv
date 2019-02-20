@@ -181,3 +181,4 @@ with tf.device('/cpu:0'): #device:GPU:1
         for i in range(len(filenames)): 
             impath = os.path.join(output_dir, filenames[i].split('/')[-1]+'_gtFine_labelIds.png')
             imsave(impath, pred[i])
+#comment
