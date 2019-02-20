@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+
 def getData(num_tests, start, type): 
 
     if 'CITYSCAPES_DATASET' in os.environ:
@@ -120,6 +121,7 @@ from tensorflow.python.keras.optimizers import *
 from tensorflow.python.keras.callbacks import ModelCheckpoint, LearningRateScheduler
 import time
 import functools
+from tensorflow.contrib import predictor
 #from eval import *
 
 
@@ -167,10 +169,13 @@ with tf.device('/cpu:0'): #device:GPU:1
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     with tf.Session(config=config) as sess:
-        model = load_model('program/unet_140epochs.hdf5', custom_objects={'tversky_loss': tversky_loss})
-        #sess.run(tf.global_variables_initializer())
-        pred = model.predict(x_test, verbose=0)
-        pred = np.argmax(pred,axis=3).astype(int)
+        latest = 'program/model'        
+        predict_fn = predictor.from_saved_model(latest)                
+        pred1=[]
+        for i in range(500):
+            pred = predict_fn({'image':[x_test_data[i]]})
+            pred1.append(pred['classes'])                            
+        pred = np.argmax(pred1,axis=3).astype(int)
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         for i in range(len(filenames)): 
