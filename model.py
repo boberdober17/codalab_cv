@@ -175,7 +175,7 @@ with tf.device('/cpu:0'): #device:GPU:1
         for i in range(500):
             pred = predict_fn({'image':[x_test_data[i]]})
             pred1.append(pred['classes'])                            
-        pred = np.argmax(pred1,axis=3).astype(int)
+        pred = np.argmax(np.array(pred1),axis=3).astype(int)
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         for i in range(len(filenames)): 
