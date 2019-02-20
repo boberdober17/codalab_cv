@@ -169,7 +169,7 @@ with tf.device('/cpu:0'): #device:GPU:1
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     with tf.Session(config=config) as sess:
-        latest = 'program/model'        
+        latest = 'program/1549964948'        
         predict_fn = predictor.from_saved_model(latest)                
         pred1=[]
         for i in range(500):
